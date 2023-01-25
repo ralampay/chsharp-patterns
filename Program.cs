@@ -1,6 +1,7 @@
 ﻿using CSharpPatterns.Models;
 using CSharpPatterns.Conf;
 using CSharpPatterns.Services;
+using CSharpPatterns.Interfaces;
 
 namespace CSharpPatterns
 {
@@ -10,8 +11,16 @@ namespace CSharpPatterns
         {
             Console.WriteLine("Patterns");
 
-            ContactService contactService = new ContactService();
-            List<Contact> allContacts = contactService.GetAll();
+            IUserService userService = new MySQLUserService();
+
+            List<User> users = GetAllUsers(userService);
+        }
+
+        public static List<User> GetAllUsers(IUserService userService)
+        {
+            List<User> users = userService.GetAll();
+
+            return users;
         }
     }
 }
