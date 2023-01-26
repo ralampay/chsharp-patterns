@@ -84,6 +84,55 @@ namespace CSharpPatterns
             o.Add("preferences", prefs);
 
             Console.WriteLine(o["preferences"][0]["audio"]["pitch"]); // Display 50
+
+
+            /*
+            {
+                "firstName": "Raphael",
+                "lastName": "Alampay",
+                "favoriteFood": [
+                    { "name": "Beef" }, { "name": "Chicken" }
+                ]
+            }
+            */
+
+            Dictionary<string, object> obj = new Dictionary<string, object>();
+            obj.Add("firstName", "Raphael");
+            obj.Add("lastName", "Alampay");
+
+            List<object> subItems = new List<object>();
+
+            Dictionary<string, object> beefObj = new Dictionary<string, object>();
+            beefObj.Add("name", "Beef");
+
+            Dictionary<string, object> chickenObj = new Dictionary<string, object>();
+            chickenObj.Add("name", "Chicken");
+
+            subItems.Add(beefObj);
+            subItems.Add(chickenObj);
+
+            obj.Add("favoriteFood", subItems);
+
+            // Typecasting
+            string tempFirstName = obj["firstName"].ToString(); // Explicit casting
+            string tempLastName = (string)obj["lastName"];  // Implicit casting
+
+            List<object> tempFavoriteFood = (List<object>)obj["favoriteFood"];
+            Dictionary<string, object> tempBeef = (Dictionary<string, object>)tempFavoriteFood[0];
+
+            Console.WriteLine(tempBeef["name"].ToString());
+
+
+
+
+
+
+
+
+
+
+
+
         }
     }
 }
