@@ -122,12 +122,45 @@ namespace CSharpPatterns
 
             Console.WriteLine(tempBeef["name"].ToString());
 
+            /*
+            {
+                "playlist": [
+                    { "name": "I can Dream About You", "genres": [ { "name": "Pop" }, { "name": "rock" } ] }
+                ]
+            }
+            */
 
+            Dictionary<string, object> pObj = new Dictionary<string, object>();
 
+            List<object> pObjItems = new List<object>();
 
+            Dictionary<string, object> pObjItem1 = new Dictionary<string, object>();
 
+            pObjItem1.Add("name", "I can Dream About You");
 
+            List<object> genres = new List<object>();
 
+            Dictionary<string, string> genre1 = new Dictionary<string, string>();
+            genre1.Add("name", "Pop");
+
+            Dictionary<string, string> genre2 = new Dictionary<string, string>();
+            genre2.Add("name", "rock");
+
+            genres.Add(genre1);
+            genres.Add(genre2);
+
+            pObjItem1.Add("genres", genres);
+
+            pObjItems.Add(pObjItem1);
+
+            pObj.Add("playlist", pObjItems);
+
+            List<object> playlistList = (List<object>)pObj["playlist"];
+            Dictionary<string, object> firstPlaylist = (Dictionary<string, object>)(playlistList[0]);
+            List<object> genresList = (List<object>)firstPlaylist["genres"];
+            Dictionary<string, string> secondElement = (Dictionary<string, string>)(genresList[1]);
+
+            Console.WriteLine(secondElement["name"]);
 
 
 
