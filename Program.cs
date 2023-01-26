@@ -47,7 +47,43 @@ namespace CSharpPatterns
             Console.WriteLine(favoriteFood["favoriteFood"][1]["name"]); // Display Chicken Nuggets
 
             /*
+            {
+                "preferences": [
+                    {
+                        "audio": {
+                            "volume": 100,
+                            "pitch": 50 
+                        },
+                        "video": {
+                            "resolution": 5,
+                            "input": 2
+                        }
+                    }
+                ]
+            }
             */
+            Dictionary<string, List<Dictionary<string, Dictionary<string, int>>>> o = new Dictionary<string, List<Dictionary<string, Dictionary<string, int>>>>();
+
+            List<Dictionary<string, Dictionary<string, int>>> prefs = new List<Dictionary<string, Dictionary<string, int>>>();
+
+            Dictionary<string, Dictionary<string, int>> prefItems = new Dictionary<string, Dictionary<string, int>>();
+
+            Dictionary<string, int> audio = new Dictionary<string, int>();
+            audio.Add("volume", 100);
+            audio.Add("pitch", 50);
+
+            Dictionary<string, int> video = new Dictionary<string, int>();
+            video.Add("resolution", 5);
+            video.Add("input", 2);
+
+            prefItems.Add("audio", audio);
+            prefItems.Add("video", video);
+
+            prefs.Add(prefItems);
+
+            o.Add("preferences", prefs);
+
+            Console.WriteLine(o["preferences"][0]["audio"]["pitch"]); // Display 50
         }
     }
 }
