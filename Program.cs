@@ -3,6 +3,8 @@ using CSharpPatterns.Conf;
 using CSharpPatterns.Services;
 using CSharpPatterns.Interfaces;
 using System.Collections.Generic;
+using CSharpPatterns.Commands;
+using System.Text.Json;
 
 namespace CSharpPatterns
 {
@@ -10,17 +12,68 @@ namespace CSharpPatterns
     {
         public static void Main(string[] args)
         {
-            /*
-            {
-                "firstName": "Raphael",
-                "lastName": "Alampay",
-            }
-            */
+            // JSON Serialization
+            // Native object turn into a JSON string
+
             Dictionary<string, string> person = new Dictionary<string, string>();
             person.Add("firstName", "Raphael");
             person.Add("lastName", "Alampay");
 
-            Console.WriteLine("Full Name: " + person["firstName"] + " " + person["lastName"]);
+            string jsonPerson = JsonSerializer.Serialize(person);
+            Console.WriteLine(jsonPerson);
+
+            // using a specific case convention
+            var seralizerOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+
+            Contact contact = new Contact(1, "Juan", "dela Cruz", "09770000000");
+
+            User user = new User(1, "John", "Doe");
+            user.Contacts.Add(contact);
+            
+            string jsonUser = JsonSerializer.Serialize<User>(user, seralizerOptions);
+            Console.WriteLine(jsonUser);
+
+            // Apply the BuildPokemonFromDictionary
+            Dictionary<string, object> pData = new Dictionary<string, object>();
+            pData.Add("name", "Pikachu");
+            pData.Add("type", "Lightning");
+            pData.Add("moves", new List<Move>());
+
+            var cmd = new BuildPokemonFromDictionary(pData);
+            Pokemon p = cmd.Execute();
+
+            Console.WriteLine(JsonSerializer.Serialize(p, seralizerOptions));
+
+            //Program.RunDictionaryExamples(seralizerOptions);
+
+            // JsonSerializerOptions serializerOptions = new JsonSerializerOptions();
+            // serializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            // serializerOptions.WriteIndented = true;
+
+
+            // JSON Deserialization
+            // Given a JSON string turn into a native object
+
+
+        }
+
+        public static void RunDictionaryExamples(JsonSerializerOptions serializerOptions)
+        {
+            /*
+                        {
+                            "firstName": "Raphael",
+                            "lastName": "Alampay",
+                        }
+                        */
+            Dictionary<string, string> person = new Dictionary<string, string>();
+            person.Add("firstName", "Raphael");
+            person.Add("lastName", "Alampay");
+
+            Console.WriteLine(JsonSerializer.Serialize(person, serializerOptions));
 
             /*
             {
@@ -30,7 +83,7 @@ namespace CSharpPatterns
             }
             */
             Dictionary<string, List<Dictionary<string, string>>> favoriteFood = new Dictionary<string, List<Dictionary<string, string>>>();
-            
+
             List<Dictionary<string, string>> listOfFood = new List<Dictionary<string, string>>();
             Dictionary<string, string> beef = new Dictionary<string, string>();
             beef.Add("name", "Beef");
@@ -38,13 +91,13 @@ namespace CSharpPatterns
             Dictionary<string, string> chicken = new Dictionary<string, string>();
             chicken.Add("name", "Chicken Nuggets");
             listOfFood.Add(chicken);
-            
+
             favoriteFood.Add(
                 "favoriteFood",
                 listOfFood
             );
 
-            Console.WriteLine(favoriteFood["favoriteFood"][1]["name"]); // Display Chicken Nuggets
+            Console.WriteLine(JsonSerializer.Serialize(favoriteFood, serializerOptions)); // Display Chicken Nuggets
 
             /*
             {
@@ -83,7 +136,7 @@ namespace CSharpPatterns
 
             o.Add("preferences", prefs);
 
-            Console.WriteLine(o["preferences"][0]["audio"]["pitch"]); // Display 50
+            Console.WriteLine(JsonSerializer.Serialize(o, serializerOptions)); // Display 50
 
 
             /*
@@ -160,12 +213,8 @@ namespace CSharpPatterns
             List<object> genresList = (List<object>)firstPlaylist["genres"];
             Dictionary<string, string> secondElement = (Dictionary<string, string>)(genresList[1]);
 
-            Console.WriteLine(secondElement["name"]);
-
-
-
-
-
+            // Console.WriteLine(((Dictionary<string, string>)(((List<object>)(((Dictionary<string, object>)(((List<object>)(pObj["playlist"]))[0]))["genres"]))[1]))["name"]);
+            Console.WriteLine(JsonSerializer.Serialize(pObj, serializerOptions));
         }
     }
 }
