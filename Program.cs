@@ -57,8 +57,15 @@ namespace CSharpPatterns
 
             // JSON Deserialization
             // Given a JSON string turn into a native object
+            string jsonString = "{ \"name\": \"Juan dela Cruz\"}";
+            Dictionary<string, object> sample = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonString);
+            Console.WriteLine(sample["name"]);
 
-
+            string jsonPokemon = "{\"name\": \"Charmander\", \"type\": \"Fire\", \"moves\": [{\"name\": \"fireball\",\"power\":1}]}";
+            Dictionary<string, object> samplePokemon = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonPokemon);
+            cmd = new BuildPokemonFromDictionary(samplePokemon);
+            Pokemon charmander = cmd.Execute();
+            Console.WriteLine(charmander.Name);
         }
 
         public static void RunDictionaryExamples(JsonSerializerOptions serializerOptions)
